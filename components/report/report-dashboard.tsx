@@ -39,8 +39,8 @@ export function ReportDashboard({ report, onBack }: ReportDashboardProps) {
         const parsed = JSON.parse(bookmarks) as string[];
         setIsBookmarked(parsed.includes(report.meta.analyzedAt));
       }
-    } catch (e) {
-      console.error(e);
+    } catch {
+      // Ignore malformed local storage data.
     }
   }, [report.meta.analyzedAt]);
 
@@ -74,8 +74,8 @@ export function ReportDashboard({ report, onBack }: ReportDashboardProps) {
           }
         }
       }
-    } catch (e) {
-      console.error(e);
+    } catch {
+      // Ignore storage write errors.
     }
   };
 
@@ -100,8 +100,8 @@ export function ReportDashboard({ report, onBack }: ReportDashboardProps) {
         setIsBookmarked(true);
       }
       localStorage.setItem("ai-agent-bookmarks", JSON.stringify(parsed));
-    } catch (e) {
-      console.error(e);
+    } catch {
+      // Ignore bookmark storage errors.
     }
   };
 

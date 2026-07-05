@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "node server.js",
     "build": "next build --turbopack",
-    "start": "next start",
+    "start": "node server.js",
     "lint": "eslint",
     "verify:data": "tsx scripts/verify-data-layer.ts",
     "verify:apple": "tsx scripts/verify-company.ts Apple AAPL",

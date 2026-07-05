@@ -32,8 +32,8 @@ export function ResearchWorkspace() {
         setActiveReport(JSON.parse(stored));
         localStorage.removeItem("ai-agent-active-report");
       }
-    } catch (e) {
-      console.error("Failed to load active report", e);
+    } catch {
+      // Ignore invalid stored report data.
     }
   }, []);
 

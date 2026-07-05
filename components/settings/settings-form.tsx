@@ -38,8 +38,8 @@ export function SettingsForm() {
       if (stored) {
         setSettings((prev) => ({ ...prev, ...JSON.parse(stored) }));
       }
-    } catch (e) {
-      console.error("Failed to load settings", e);
+    } catch {
+      // Ignore malformed stored settings.
     }
   }, []);
 
@@ -83,8 +83,8 @@ export function SettingsForm() {
       localStorage.setItem("ai-agent-settings", JSON.stringify(settings));
       setIsSaved(true);
       setTimeout(() => setIsSaved(false), 3000);
-    } catch (e) {
-      console.error("Failed to save settings", e);
+    } catch {
+      // Ignore storage write failures.
     }
   };
 
@@ -143,6 +143,7 @@ export function SettingsForm() {
                   onChange={(e) => setSettings({ ...settings, openaiApiKey: e.target.value })}
                   placeholder="sk-proj-..."
                   className="pr-10"
+                  autoComplete="off"
                 />
                 <button
                   type="button"
@@ -167,6 +168,7 @@ export function SettingsForm() {
                   onChange={(e) => setSettings({ ...settings, fmpApiKey: e.target.value })}
                   placeholder="Enter FMP Key"
                   className="pr-10"
+                  autoComplete="off"
                 />
                 <button
                   type="button"
@@ -191,6 +193,7 @@ export function SettingsForm() {
                   onChange={(e) => setSettings({ ...settings, tavilyApiKey: e.target.value })}
                   placeholder="tvly-..."
                   className="pr-10"
+                  autoComplete="off"
                 />
                 <button
                   type="button"
@@ -213,6 +216,7 @@ export function SettingsForm() {
                   value={settings.openaiModel}
                   onChange={(e) => setSettings({ ...settings, openaiModel: e.target.value })}
                   className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  aria-label="Choose AI model"
                 >
                   <option value="gpt-4o">GPT-4o (High Quality)</option>
                   <option value="gpt-4o-mini">GPT-4o-Mini (Fast & Cheap)</option>
@@ -228,6 +232,7 @@ export function SettingsForm() {
                   value={theme || "system"}
                   onChange={(e) => setTheme(e.target.value)}
                   className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  aria-label="Choose theme"
                 >
                   <option value="system">System Default</option>
                   <option value="light">Light Mode</option>

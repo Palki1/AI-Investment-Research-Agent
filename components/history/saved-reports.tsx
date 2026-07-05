@@ -31,8 +31,8 @@ export function SavedReportsManager() {
       if (storedBookmarks) {
         setBookmarks(JSON.parse(storedBookmarks));
       }
-    } catch (e) {
-      console.error("Failed to load reports history", e);
+    } catch {
+      // Ignore malformed local storage data.
     }
   }, []);
 
@@ -76,8 +76,8 @@ export function SavedReportsManager() {
     try {
       localStorage.setItem("ai-agent-active-report", JSON.stringify(report));
       router.push("/");
-    } catch (e) {
-      console.error("Failed to set active report", e);
+    } catch {
+      // Ignore local storage write failures.
     }
   };
 
@@ -121,6 +121,7 @@ export function SavedReportsManager() {
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by company or ticker..."
             className="pl-9"
+            aria-label="Search saved reports"
           />
         </div>
 
@@ -142,6 +143,7 @@ export function SavedReportsManager() {
               value={sortBy}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSortBy(e.target.value as "date-desc" | "date-asc" | "name-asc" | "name-desc")}
               className="bg-transparent pr-1 text-xs focus-visible:outline-none"
+              aria-label="Sort saved reports"
             >
               <option value="date-desc">Newest First</option>
               <option value="date-asc">Oldest First</option>

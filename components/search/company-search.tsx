@@ -28,7 +28,8 @@ export function CompanySearch({
 
   const handleSelect = useCallback(
     (result: CompanySearchResult) => {
-      onChange(result.name);
+      const normalizedName = result.name?.trim() || result.symbol;
+      onChange(normalizedName);
       setFocused(false);
     },
     [onChange],

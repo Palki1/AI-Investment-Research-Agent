@@ -42,6 +42,7 @@ export function SearchSuggestions({
                 type="button"
                 role="option"
                 aria-selected={false}
+                aria-label={`Select ${result.name} (${result.symbol})`}
                 className={cn(
                   "flex w-full flex-col items-start gap-0.5 px-3 py-2 text-left text-sm",
                   "hover:bg-muted focus-visible:bg-muted focus-visible:outline-none",

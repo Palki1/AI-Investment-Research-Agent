@@ -1,6 +1,6 @@
 # AI Investment Research Agent
 
-A modern, production-ready autonomous Equity Research Agent that compiles institutional-grade investment reports using verified financial metrics, news feeds, sentiment analysis, and structured AI narrations.
+A modern, production-ready autonomous Equity Research Agent built with Node.js and a React-based UI that compiles institutional-grade investment reports using verified financial metrics, news feeds, sentiment analysis, and structured AI narrations.
 
 ---
 
@@ -11,7 +11,7 @@ A modern, production-ready autonomous Equity Research Agent that compiles instit
 - **Local Report Management**: Save, delete, search, sort, and bookmark generated reports client-side using browser `localStorage`.
 - **Dynamic API Key Overrides**: Custom Settings page allowing users to override default server credentials (OpenAI, FMP, Tavily keys) dynamically in a thread-safe manner using `AsyncLocalStorage`.
 - **Three Exporters**: Download compiled reports as pixel-perfect PDF/Print stylesheets, raw Markdown, or plain text files.
-- **Accessibility & Theme**: Full compliance with WCAG contrast, aria roles, and native Next.js system theme toggles.
+- **Accessibility & Theme**: Full compliance with WCAG contrast, aria roles, and native theme toggles for the interface.
 
 ---
 
@@ -42,6 +42,7 @@ A modern, production-ready autonomous Equity Research Agent that compiles instit
 ### Modular Structure
 
 - `/app`: App Router views for Dashboard (`/`), Saved Reports (`/history`), and Settings (`/settings`).
+- `/server.js`: Node.js entry point for serving the application runtime.
 - `/components`: Modular UI:
   - `/charts`: Recharts visualizations.
   - `/dashboard`: Hero, Profile, and Recommendation cards.
@@ -81,6 +82,12 @@ A modern, production-ready autonomous Equity Research Agent that compiles instit
    ```
    Open [http://localhost:3000](http://localhost:3000).
 
+4. For production mode:
+   ```bash
+   npm run build
+   npm run start
+   ```
+
 ---
 
 ## Verification & Testing
@@ -98,6 +105,6 @@ npm run verify:apple
 
 ---
 
-## Deployment to Vercel
+## Deployment Notes
 
-Check the step-by-step instructions in the [Vercel Deployment Guide](docs/VERCEL.md).
+This project is prepared for a Node.js-based runtime and can be deployed to a standard Node.js host or container platform. For platform-specific guidance, refer to the [Vercel Deployment Guide](docs/VERCEL.md).

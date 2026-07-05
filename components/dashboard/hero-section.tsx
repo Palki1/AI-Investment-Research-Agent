@@ -1,8 +1,6 @@
 "use client";
 
-import { BarChart3, Brain, ShieldCheck, Zap, Search } from "lucide-react";
-
-import { APP_DESCRIPTION, APP_NAME } from "@/lib/config/constants";
+import { Search } from "lucide-react";
 
 export function HeroSection() {
   const handleScrollToSearch = () => {
@@ -16,7 +14,7 @@ export function HeroSection() {
   return (
     <section className="relative overflow-hidden rounded-2xl p-8" aria-labelledby="hero-heading">
       <div className="relative z-10 max-w-5xl mx-auto">
-        <p className="mb-3 text-sm font-medium uppercase tracking-widest text-muted-foreground">
+        <p className="mb-3 text-sm font-medium uppercase tracking-[0.3em] text-muted-foreground">
           AI-Powered · Free Data Sources
         </p>
 
