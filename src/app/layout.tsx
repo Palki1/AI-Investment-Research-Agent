@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AI Investment Research Agent",
+  title: "AI Investment- Research Agent",
   description: "Research any public company using AI and receive a detailed investment recommendation backed by financial data, news, and analysis.",
 };
 
