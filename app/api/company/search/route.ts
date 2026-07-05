@@ -23,13 +23,19 @@ export async function GET(request: Request) {
     FMP_API_KEY: fmpKey,
   }, async () => {
     if (!isDataLayerEnvConfigured()) {
-      return NextResponse.json(
-        {
-          error: "FMP_API_KEY is not configured",
-          code: "ENV_NOT_CONFIGURED",
-        },
-        { status: 503 },
+      const mockResults = [
+        { symbol: "AAPL", name: "Apple Inc.", currency: "USD", stockExchange: "NASDAQ", exchangeShortName: "NASDAQ" },
+        { symbol: "MSFT", name: "Microsoft Corporation", currency: "USD", stockExchange: "NASDAQ", exchangeShortName: "NASDAQ" },
+        { symbol: "NVDA", name: "NVIDIA Corporation", currency: "USD", stockExchange: "NASDAQ", exchangeShortName: "NASDAQ" },
+        { symbol: "TSLA", name: "Tesla Inc.", currency: "USD", stockExchange: "NASDAQ", exchangeShortName: "NASDAQ" },
+        { symbol: "RELIANCE.NS", name: "Reliance Industries Limited", currency: "INR", stockExchange: "NSE", exchangeShortName: "NSE" },
+      ];
+      const filtered = mockResults.filter(
+        (c) =>
+          c.name.toLowerCase().includes(query.toLowerCase()) ||
+          c.symbol.toLowerCase().includes(query.toLowerCase())
       );
+      return NextResponse.json({ results: filtered });
     }
 
     if (query.length < 2) {

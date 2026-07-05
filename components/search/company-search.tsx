@@ -51,7 +51,7 @@ export function CompanySearch({
           aria-hidden="true"
         />
         <Input
-          id={inputId}
+          id="company-search-input"
           value={value}
           onChange={(event) => onChange(event.target.value)}
           onFocus={() => setFocused(true)}
@@ -85,7 +85,10 @@ export function CompanySearch({
               variant="outline"
               size="sm"
               disabled={disabled}
-              onClick={() => onChange(company)}
+              onClick={() => {
+                onChange(company);
+                setTimeout(() => onSubmit(), 50);
+              }}
             >
               {company}
             </Button>

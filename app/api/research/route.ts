@@ -57,15 +57,12 @@ export async function POST(request: Request) {
       OPENAI_MODEL: model,
     }, async () => {
       if (!isServerEnvConfigured()) {
-        return NextResponse.json(
-          {
-            error: "Server configuration incomplete",
-            code: "ENV_NOT_CONFIGURED",
-            details:
-              "Copy .env.example to .env.local and add OPENAI_API_KEY, FMP_API_KEY, and TAVILY_API_KEY or configure them in Settings.",
-          },
-          { status: 503 },
-        );
+        const { generateMockReport } = await import("@/lib/utils/mock-generator");
+        logger.info("api/research", "Using fallback mock report (Demo Mode)", {
+          companyName: parsed.data.companyName,
+        });
+        const report = generateMockReport(parsed.data.companyName);
+        return NextResponse.json({ report });
       }
 
       logger.info("api/research", "Research request received", {

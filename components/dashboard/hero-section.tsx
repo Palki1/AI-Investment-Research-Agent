@@ -1,8 +1,18 @@
+"use client";
+
 import { BarChart3, Brain, ShieldCheck, Zap } from "lucide-react";
 
 import { APP_DESCRIPTION, APP_NAME } from "@/lib/config/constants";
 
 export function HeroSection() {
+  const handleScrollToSearch = () => {
+    const input = document.getElementById("company-search-input");
+    if (input) {
+      input.scrollIntoView({ behavior: "smooth", block: "center" });
+      input.focus();
+    }
+  };
+
   return (
     <section
       className="relative overflow-hidden rounded-2xl border bg-gradient-to-br from-primary/5 via-background to-background p-6 sm:p-8"
@@ -27,13 +37,15 @@ export function HeroSection() {
             { icon: BarChart3, label: "Interactive charts" },
             { icon: Zap, label: "Full report in minutes" },
           ].map(({ icon: Icon, label }) => (
-            <div
+            <button
               key={label}
-              className="flex items-center gap-2 rounded-lg border bg-background/70 px-3 py-2 text-sm"
+              type="button"
+              onClick={handleScrollToSearch}
+              className="flex items-center gap-2 rounded-lg border bg-background/70 px-3 py-2 text-sm text-left hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-all duration-200 cursor-pointer"
             >
               <Icon className="size-4 shrink-0 text-primary" aria-hidden="true" />
               <span>{label}</span>
-            </div>
+            </button>
           ))}
         </div>
       </div>
