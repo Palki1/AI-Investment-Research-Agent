@@ -81,7 +81,7 @@ export function useResearch() {
       }, 2800);
 
       try {
-        let headers: Record<string, string> = { "Content-Type": "application/json" };
+        const headers: Record<string, string> = { "Content-Type": "application/json" };
         try {
           const stored = localStorage.getItem("ai-agent-settings");
           if (stored) {

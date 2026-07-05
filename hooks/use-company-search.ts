@@ -30,7 +30,7 @@ export function useCompanySearch(query: string) {
       setError(null);
 
       try {
-        let headers: Record<string, string> = {};
+        const headers: Record<string, string> = {};
         try {
           const stored = localStorage.getItem("ai-agent-settings");
           if (stored) {
