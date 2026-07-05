@@ -122,9 +122,19 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground text-[15px] leading-7;
   }
   html {
-    @apply font-sans;
+    @apply font-sans text-[15px];
+  }
+}
+
+@layer utilities {
+  .btn-animate {
+    @apply transition-all duration-300 ease-out;
+  }
+
+  .hero-title {
+    font-family: var(--font-sans), system-ui, sans-serif;
   }
 }
