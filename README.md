@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Investment Research Agent
+
+A modern, production-ready autonomous Equity Research Agent that compiles institutional-grade investment reports using verified financial metrics, news feeds, sentiment analysis, and structured AI narrations.
+
+---
+
+## Key Features
+
+- **Verified Data Guarantee**: Financial statements, profile information, and competitor data are pulled in real-time from the Financial Modeling Prep (FMP) API. The AI engine never generates numbers, eliminating hallucination.
+- **Dynamic Chart Suite**: 9 interactive, responsive charts built with **Recharts** rendering Revenue Trend, Net Income, Cash Flow, Debt/Equity stack, Margins, and EPS trends.
+- **Local Report Management**: Save, delete, search, sort, and bookmark generated reports client-side using browser `localStorage`.
+- **Dynamic API Key Overrides**: Custom Settings page allowing users to override default server credentials (OpenAI, FMP, Tavily keys) dynamically in a thread-safe manner using `AsyncLocalStorage`.
+- **Three Exporters**: Download compiled reports as pixel-perfect PDF/Print stylesheets, raw Markdown, or plain text files.
+- **Accessibility & Theme**: Full compliance with WCAG contrast, aria roles, and native Next.js system theme toggles.
+
+---
+
+## Technical Architecture
+
+```
+    User Search
+         │
+         ▼
+[Company Resolver]  ───(Symbol matched)───► [Research Collector]
+                                                   │
+                                                   ▼
+                                         [Data Normalizer] (FMP + Tavily facts)
+                                                   │
+                                                   ▼
+                                        [AsyncLocalStorage] (Request-scoped keys)
+                                                   │
+                                                   ▼
+                                         [AI Analysis Engine] (GPT-4o structured JSON)
+                                                   │
+                                                   ▼
+                                         [Report Assembler] ( Narrative + Verified Metrics)
+                                                   │
+                                                   ▼
+                                            [InvestmentReport]
+```
+
+### Modular Structure
+
+- `/app`: App Router views for Dashboard (`/`), Saved Reports (`/history`), and Settings (`/settings`).
+- `/components`: Modular UI:
+  - `/charts`: Recharts visualizations.
+  - `/dashboard`: Hero, Profile, and Recommendation cards.
+  - `/report`: Detailed narrative visualizers and tables.
+  - `/history`: Local report managers.
+  - `/settings`: Custom key inputs and validation.
+- `/lib`:
+  - `/agent`: LangChain sequencers, data normalizers, and LLM schemas.
+  - `/tools`: FMP client fetchers and Tavily search collectors.
+  - `/utils`: Chart calculators and export writers.
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 20+
+- npm
+
+### Installation & Launch
+
+1. Clone the repository and install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Configure environment keys:
+   ```bash
+   cp .env.example .env.local
+   # Fill in OPENAI_API_KEY, FMP_API_KEY, and TAVILY_API_KEY
+   ```
+
+3. Spin up the development server:
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000).
+
+---
+
+## Verification & Testing
+
+Verify calculation logic, mock profiles, and data pipelines by running:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run verify:report
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+For general data-layer health checks:
+```bash
+npm run verify:data
+npm run verify:apple
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Deployment to Vercel
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Check the step-by-step instructions in the [Vercel Deployment Guide](docs/VERCEL.md).
