@@ -21,6 +21,8 @@ export const metadata: Metadata = {
 };
 
 import { ThemeProvider } from "@/components/layout/theme-provider";
+import { AuthProvider } from "@/components/layout/auth-provider";
+import AuthGate from "@/components/layout/auth-gate";
 
 export default function RootLayout({
   children,
@@ -32,9 +34,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} min-h-screen antialiased`}
       >
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider>
+            <AuthGate>{children}</AuthGate>
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );

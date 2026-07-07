@@ -138,3 +138,20 @@
     font-family: var(--font-sans), system-ui, sans-serif;
   }
 }
+
+@layer utilities {
+  .btn-primary {
+    @apply rounded-full px-6 py-3 text-sm font-semibold text-white shadow-lg transition;
+    transform: translateZ(0);
+    background-image: linear-gradient(90deg, var(--primary), #7c3aed);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-6px);
+  }
+
+  .btn-primary-sm {
+    @apply rounded-full px-3.5 py-2 text-sm font-semibold text-white shadow-sm transition;
+    background-image: linear-gradient(90deg, var(--primary), #7c3aed);
+  }
+}

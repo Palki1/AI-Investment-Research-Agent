@@ -9,7 +9,15 @@ import { ReportDashboard } from "@/components/report/report-dashboard";
 import { HeroSection } from "@/components/dashboard/hero-section";
 import type { InvestmentReport } from "@/lib/types/investment-report";
 
-export function ResearchWorkspace() {
+interface ResearchWorkspaceProps {
+  initialCompanyName?: string;
+  hideHero?: boolean;
+}
+
+export function ResearchWorkspace({
+  initialCompanyName,
+  hideHero = false,
+}: ResearchWorkspaceProps) {
   const [companyNameInput, setCompanyNameInput] = useState("");
   const [activeReport, setActiveReport] = useState<InvestmentReport | null>(null);
 
@@ -37,6 +45,14 @@ export function ResearchWorkspace() {
     }
   }, []);
 
+  // Automatically start research when the dashboard route includes a company name.
+  useEffect(() => {
+    if (initialCompanyName) {
+      setCompanyNameInput(initialCompanyName);
+      runResearch(initialCompanyName);
+    }
+  }, [initialCompanyName, runResearch]);
+
   const handleSearchSubmit = () => {
     const query = companyNameInput.trim();
     if (query) {
@@ -50,6 +66,10 @@ export function ResearchWorkspace() {
     reset();
   };
 
+  const handleExampleClick = (name: string) => {
+    setCompanyNameInput(name);
+  };
+
   // If a report is currently loaded (either generated or loaded from history)
   const currentReport = activeReport || report;
 
@@ -57,15 +77,27 @@ export function ResearchWorkspace() {
     <div className="space-y-6">
       {status !== "loading" && !currentReport ? (
         <>
-          <HeroSection />
-          <div className="max-w-xl">
-            <CompanySearch
+          {!hideHero ? (
+            <HeroSection
               value={companyNameInput}
-              onChange={setCompanyNameInput}
+              onInputChange={setCompanyNameInput}
               onSubmit={handleSearchSubmit}
               disabled={isLoading}
+              onExampleClick={handleExampleClick}
             />
-          </div>
+          ) : null}
+
+          {hideHero ? (
+            <div className="max-w-xl">
+              <CompanySearch
+                value={companyNameInput}
+                onChange={setCompanyNameInput}
+                onSubmit={handleSearchSubmit}
+                disabled={isLoading}
+              />
+            </div>
+          ) : null}
+
           {status === "error" && error ? (
             <ErrorPanel error={error} onRetry={handleSearchSubmit} />
           ) : (

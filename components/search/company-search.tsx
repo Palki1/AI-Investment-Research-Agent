@@ -1,13 +1,10 @@
 "use client";
 
-import { Search, Sparkles } from "lucide-react";
+import { Search } from "lucide-react";
 import { useCallback, useId, useState } from "react";
 
 import { useCompanySearch, type CompanySearchResult } from "@/hooks/use-company-search";
-import { EXAMPLE_COMPANIES } from "@/lib/config/constants";
 import { SearchSuggestions } from "@/components/search/search-suggestions";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 
 interface CompanySearchProps {
   value: string;
@@ -42,59 +39,45 @@ export function CompanySearch({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="relative">
-        <label htmlFor={inputId} className="sr-only">
-          Company name or ticker
-        </label>
-        <Search
-          className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
-          aria-hidden="true"
-        />
-        <Input
-          id="company-search-input"
-          value={value}
-          onChange={(event) => onChange(event.target.value)}
-          onFocus={() => setFocused(true)}
-          onBlur={() => window.setTimeout(() => setFocused(false), 150)}
-          placeholder="Search by company name or ticker (e.g. AAPL, Microsoft)"
-          className="h-11 pl-9"
-          disabled={disabled}
-          autoComplete="off"
-          aria-autocomplete="list"
-          aria-controls="company-suggestions"
-        />
-        <SearchSuggestions
-          results={results}
-          isSearching={isSearching}
-          query={value}
-          onSelect={handleSelect}
-          visible={focused}
-        />
-      </div>
-
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-        <Button type="submit" disabled={disabled || !value.trim()} className="h-11 gap-2">
-          <Sparkles className="size-4" aria-hidden="true" />
-          Analyze Company
-        </Button>
-        <div className="flex flex-wrap gap-2" aria-label="Example companies">
-          {EXAMPLE_COMPANIES.slice(0, 4).map((company) => (
-            <Button
-              key={company}
-              type="button"
-              variant="outline"
-              size="sm"
-              disabled={disabled}
-              onClick={() => {
-                onChange(company);
-                setTimeout(() => onSubmit(), 50);
-              }}
-            >
-              {company}
-            </Button>
-          ))}
+    <form onSubmit={handleSubmit}>
+      <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center">
+        <div className="relative flex-1">
+          <label htmlFor={inputId} className="sr-only">
+            Company name or ticker
+          </label>
+          <div className="pointer-events-none absolute inset-y-0 left-4 flex items-center text-muted-foreground">
+            <Search className="size-5" />
+          </div>
+          <input
+            id="company-search-input"
+            type="search"
+            value={value}
+            onChange={(event) => onChange(event.target.value)}
+            onFocus={() => setFocused(true)}
+            onBlur={() => window.setTimeout(() => setFocused(false), 150)}
+            placeholder="Enter company name (e.g. Nvidia, Tesla, Stripe...)"
+            className="w-full rounded-full border py-4 pl-14 pr-6 text-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            disabled={disabled}
+            autoComplete="off"
+            aria-autocomplete="list"
+            aria-controls="company-suggestions"
+          />
+          <SearchSuggestions
+            results={results}
+            isSearching={isSearching}
+            query={value}
+            onSelect={handleSelect}
+            visible={focused}
+          />
         </div>
+
+        <button
+          type="submit"
+          disabled={disabled || !value.trim()}
+          className="btn-animate btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Analyze
+        </button>
       </div>
     </form>
   );

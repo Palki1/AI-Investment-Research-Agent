@@ -1,94 +1,111 @@
 "use client";
 
+import { EXAMPLE_COMPANIES } from "@/lib/config/constants";
 import { Search } from "lucide-react";
 
-export function HeroSection() {
-  const handleScrollToSearch = () => {
-    const input = document.getElementById("company-search-input");
-    if (input) {
-      input.scrollIntoView({ behavior: "smooth", block: "center" });
-      // do not autofocus here in case user is on mobile
-    }
-  };
+interface HeroSectionProps {
+  value: string;
+  onInputChange: (value: string) => void;
+  onSubmit: () => void;
+  disabled?: boolean;
+  onExampleClick: (companyName: string) => void;
+}
 
+export function HeroSection({
+  value,
+  onInputChange,
+  onSubmit,
+  disabled = false,
+  onExampleClick,
+}: HeroSectionProps) {
   return (
-    <section className="relative overflow-hidden rounded-2xl p-8" aria-labelledby="hero-heading">
+    <section className="relative overflow-hidden rounded-2xl border border-border bg-card p-8 shadow-xl shadow-primary/10" aria-labelledby="hero-heading">
       <div className="relative z-10 max-w-5xl mx-auto">
-        <p className="mb-3 text-sm font-medium uppercase tracking-[0.3em] text-muted-foreground">
-          AI-Powered · Free Data Sources
-        </p>
+        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm text-primary">
+          <span className="h-2 w-2 rounded-full bg-primary" />
+          Powered by LangGraph & GPT-4
+        </div>
 
         <h1 id="hero-heading" className="hero-title mb-4 text-4xl font-black leading-[1.05] tracking-[-0.03em] sm:text-5xl md:text-6xl">
-          Research any company <span className="text-primary">in seconds</span>
+          AI Investment Research for <span className="text-primary">leading companies</span>
         </h1>
 
         <p className="mb-6 max-w-3xl text-lg leading-8 text-muted-foreground sm:text-xl">
-          Enter any public or private company name. The AI agent resolves,
-          scrapes, and analyzes corporate data to produce an Invest or Pass
-          recommendation.
+          Research any public company using verified financial data, news, and AI analysis to generate a detailed investment recommendation.
         </p>
 
-        <div className="flex w-full max-w-3xl flex-col gap-3 sm:flex-row sm:items-center">
-          <div className="relative flex-1">
+        <form onSubmit={(event) => {
+          event.preventDefault();
+          onSubmit();
+        }} className="space-y-4">
+          <div className="relative">
             <div className="pointer-events-none absolute inset-y-0 left-4 flex items-center text-muted-foreground">
-              <Search className="size-5" />
+              <Search className="size-5" aria-hidden="true" />
             </div>
             <input
-              id="company-search-input"
               type="search"
-              placeholder="Enter company name (e.g. Nvidia, Tesla, Stripe...)"
-              className="w-full rounded-full border py-4 pl-14 pr-6 text-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              value={value}
+              onChange={(event) => onInputChange(event.target.value)}
+              placeholder="Enter company name (e.g. Apple, Tesla, Reliance...)"
+              className="w-full rounded-full border border-border bg-background px-14 py-4 text-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              disabled={disabled}
+              autoComplete="off"
+              aria-label="Company name or ticker"
             />
-          </div>
-
-          <div className="flex flex-wrap gap-2">
             <button
-              type="button"
-              onClick={handleScrollToSearch}
-              className="btn-animate rounded-full bg-gradient-to-r from-primary to-[#ff8a4b] px-6 py-3 text-sm font-semibold text-white shadow-md hover:-translate-y-1 hover:scale-[1.03] hover:shadow-xl"
+              type="submit"
+              disabled={disabled || !value.trim()}
+              className="absolute right-1 top-1/2 -translate-y-1/2 btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Analyze report
-            </button>
-            <button
-              type="button"
-              onClick={handleScrollToSearch}
-              className="btn-animate rounded-full border border-border bg-background px-6 py-3 text-sm font-semibold text-foreground shadow-sm hover:-translate-y-1 hover:bg-muted"
-            >
-              Open analysis
+              Analyze
             </button>
           </div>
-        </div>
 
-        <div className="mt-10 grid gap-4 sm:grid-cols-3">
+          <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
+            <span className="font-semibold text-foreground">Trending searches:</span>
+            {EXAMPLE_COMPANIES.map((company) => (
+              <button
+                key={company}
+                type="button"
+                onClick={() => onExampleClick(company)}
+                className="rounded-full border border-border bg-muted/40 px-3 py-1.5 text-sm font-medium text-foreground transition hover:border-primary/70 hover:bg-primary/10"
+              >
+                {company}
+              </button>
+            ))}
+          </div>
+        </form>
+
+        <div className="mt-12 grid gap-4 sm:grid-cols-3">
           {[
             {
               num: "01",
-              title: "Ticker & Financials",
-              desc: "Identifies stock tickers via Yahoo Finance and pulls income statements, margins, FCF, and 1-year price charts.",
+              title: "Ticker + Financials",
+              desc: "Identifies public tickers and extracts income statements, cash flow, and valuation metrics.",
             },
             {
               num: "02",
-              title: "Web Due Diligence",
-              desc: "Scrapes DuckDuckGo news with cheerio to evaluate competitor strategies, market share, and regulatory headwinds.",
+              title: "News & Industry",
+              desc: "Scans the latest headlines, competitor activity, and macro trends to assess momentum and risk.",
             },
             {
               num: "03",
-              title: "CIO Recommendation",
-              desc: "Synthesizes quantitative metrics and sentiment via LLM JSON schemas to produce a detailed Invest/Pass thesis.",
+              title: "Investment Thesis",
+              desc: "Synthesizes quantitative data and narrative reasoning into an Invest, Watch, or Pass decision.",
             },
-          ].map((c) => (
-            <div key={c.num} className="rounded-xl border bg-card p-6">
-              <div className="mb-2 flex items-baseline gap-3">
-                <span className="text-2xl font-bold text-primary">{c.num}</span>
-                <h3 className="text-base font-semibold">{c.title}</h3>
+          ].map((card) => (
+            <div key={card.num} className="rounded-3xl border border-border bg-background/80 p-6 backdrop-blur-sm">
+              <div className="mb-3 flex items-center gap-3">
+                <span className="text-2xl font-bold text-primary">{card.num}</span>
+                <h3 className="text-base font-semibold">{card.title}</h3>
               </div>
-              <p className="text-sm text-muted-foreground">{c.desc}</p>
+              <p className="text-sm leading-6 text-muted-foreground">{card.desc}</p>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-primary/10 blur-3xl" aria-hidden="true" />
+      <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-primary/10 blur-3xl" aria-hidden="true" />
     </section>
   );
 }
